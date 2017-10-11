@@ -1,5 +1,16 @@
 <?
 include ("engine.php");
+if ( Utility::is_session_started() === FALSE ) session_start();
+
+$connected = false;
+$mail = "";
+
+if(isset($_SESSION['mail'])){
+  $connected = true;
+  $mail = $_SESSION['mail'];
+
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -55,11 +66,23 @@ include ("engine.php");
 
                     <div id="navbar-scroll" class="collapse navbar-collapse navbar-backyard navbar-right">
                         <ul class="nav navbar-nav">
+                            <? if($connected){ ?>
+                              <li><?php echo $mail; ?></li>
+                            <?php } ?>
                             <li><a href="index.php">Home</a></li>
+                            <li><a href="page.php?page=createlist">créer une liste</a></li>
+                            <li><a href="page.php?page=register">Register</a></li>
+                            <? if(!$connected){ ?>
+                              <li><a href="page.php?page=login">Login</a></li>
+                            <?php } ?>
+                            <? if($connected){ ?>
+                              <li><a href="engine.php?action=logout">Logout</a></li>
+                            <?php } ?>
+
                             <li><a href="page.php?page=createlist">createList</a></li>
-                            <li><a href="page.php?page=additem">addItem</a></li>
                             <li><a href="page.php?page=displaylist">displaylist</a></li>
-                            <li><a href="page.php?page=displayOneListe">display One list </a></li>
+                            <li><a href="page.php?page=register">Register</a></li>
+
 
                         </ul>
                     </div>

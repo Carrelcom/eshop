@@ -1,5 +1,10 @@
 <?php
-$arrListes = Engine::GetListes();
+$display = false;
+if($connected && $mail <> ""){
+  $display = true;
+}
+
+$arrListes = Engine::GetListes(array('mail_admin'=>$mail));
 
 
 ?>
@@ -20,7 +25,7 @@ $arrListes = Engine::GetListes();
                 foreach ($arrListes as $liste) {
                   echo "<tr>";
                   echo "<td>".$liste->getIdListe()."</td>";
-                  echo "    <td><a href='page.php?page=displayOneListe&listeId=".$liste->getIdListe()."'>".$liste->getListeName()."</a></td>";
+                  echo "    <td><a href='page.php?page=displayOneListe&listUrl=".$liste->getUrl()."'>".$liste->getListeName()."</a></td>";
                   echo "    <td class='text-center'><strong>".$liste->getAdminName()."</strong></td>";
                   echo "</tr>";
                 }

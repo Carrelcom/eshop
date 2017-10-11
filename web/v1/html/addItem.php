@@ -9,12 +9,7 @@ $htmlListeCat .= "</select>";
 
 
 
-$listeListe = Engine::GetListes(NULL);
-$htmlListeList = "<select name='Liste' id='Liste[]' class='form-control'>";
-foreach ($listeListe as $liste) {
-  $htmlListeList .= "<option value='".$liste->getIdListe()."'>".$liste->getListeName()."</option>";
-}
-$htmlListeList .= "</select>";
+
  ?>
 
 

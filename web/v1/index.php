@@ -1,6 +1,14 @@
+
+
 <?
 require_once('../../srv/Autoloader.class.php');
 Autoloader::register();
+
+$session = "";
+$mail = "";
+
+if ( Utility::is_session_started() === FALSE ) session_start();
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -118,6 +126,7 @@ Autoloader::register();
                             <li><a href="#free">Free</a></li>
                             <li><a href="#secure">Secure</a></li>
                             <li><a href="#question">Any question</a></li>
+                            <li><a href="page.php">page</a>
 
                         </ul>
                     </div>
@@ -137,6 +146,7 @@ Autoloader::register();
 
                     <!-- /.intro content -->
                     <div class="col-md-6 wow slideInRight">
+
                         <h2>Optimize performance through advanced targeting solutions</h2>
                         <p>Good marketing makes the company look smart. <a href="#">Great marketing</a> makes the customer feel smart, - Joe Chernov. Never doubt a small group of thoughtful, committed people can change the world. Indeed, it is the only thing that ever has, - Margaret Mead. The best way to predict the future is to create it, - Peter Drucker.
                         </p>

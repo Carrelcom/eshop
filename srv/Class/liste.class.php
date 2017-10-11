@@ -14,6 +14,7 @@ class Liste
   private $creationDate;
   private $public;
   private $description ;
+  private $url;
 
     /**
      * Get the value of Liste Name
@@ -210,16 +211,41 @@ class Liste
         return $this;
     }
 
+    /**
+     * Get the value of Url
+     *
+     * @return mixed
+     */
+    public function getUrl()
+    {
+        return $this->url;
+    }
+
+    /**
+     * Set the value of Url
+     *
+     * @param mixed url
+     *
+     * @return self
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
 /**
 * Enregistrement d'une nouvelle liste.
 **/
     public function saveListe(){
 
-
+      $url = NULL;
       $db = db::getConnexion();
 
       // SI ID NULL --> INSERT
       if($this->idListe == NULL){
+        $url = Utility::generateUniqueUrl($this->adminEmail, $this->listeName, $this->endDate);
         $liste = $db->listes()->insert(array(
 
           "label" =>   $this->listeName,
@@ -227,7 +253,8 @@ class Liste
           "nom_admin" => $this->adminEmail,
         	"date_echeance" => $this->endDate,
           "public" => $this->public,
-          "commentaires" => $this->description
+          "commentaires" => $this->description,
+          "url" => $url
 
         ));
 
@@ -236,14 +263,14 @@ class Liste
         $liste = $db->listes[$this->idListe];
 
         $liste["label"] = $this->listeName;
-        $liste["date-echeance"] = $this->endDate;
-        //$liste["mail"] = "http://texy.info/";
+        $liste["date_echeance"] = $this->endDate;
         $liste["public"] = $this->public;
         $liste["commentaires"] = $this->description;
-
+        $url = $this->url;
 
         $liste->update();
       }
+      return $url;
     }
     // Get all items of current liste
     // return items arr
@@ -255,9 +282,17 @@ class Liste
     // Retourne une liste de listes
     public static function getAllListe($filter){
 
+      $listes = null;
       $db = db::getConnexion();
+
+      if($filter === NULL){
+        $listes = $db->listes();
+      }else{
+          $listes = $db->listes($filter);
+      }
+
       $arrlistes = array();
-      foreach ($db->listes() as $liste) {
+      foreach ($listes as $liste) {
 
         $objliste = new Liste();
         $objliste->setListeName($liste['label']);
@@ -268,6 +303,7 @@ class Liste
         $objliste->setPublic($liste['public']);
         $objliste->setDescription($liste['commentaires']);
         $objliste->setIdListe($liste['id']);
+        $objliste->setUrl($liste['url']);
 
         array_push($arrlistes,$objliste);
 
@@ -283,12 +319,19 @@ class Liste
     * Get One list why ID
     * Return Obj liste
     */
-    public static function getOneList($id){
+    public static function getOneList($type,$val){
 
       $db = db::getConnexion();
       $arrlistes = array();
       $objliste = new Liste();
-      foreach ($db->listes("id", $id) as $liste) {
+      $rq = null;
+      if($type=="url"){
+        $rq = $db->listes("url", $val);
+      }else if($type=="id"){
+        $rq = $db->listes("id", $val);
+      }
+
+      foreach ($rq as $liste) {
 
         $objliste->setListeName($liste['label']);
         $objliste->setAdminName($liste['nom_admin']);
@@ -298,6 +341,7 @@ class Liste
         $objliste->setPublic($liste['public']);
         $objliste->setDescription($liste['commentaires']);
         $objliste->setIdListe($liste['id']);
+        $objliste->setUrl($liste['url']);
 
       }
       return $objliste;
@@ -310,10 +354,17 @@ class Liste
     * Return false if not exists
     * Return NULL if error (nb val > 1 for an unique ID)
     */
-    public static function isListExist($id){
+    public static function isListExist($type,$val){
 
       $db = db::getConnexion();
-      $nbVal = count($db->listes("id", $id));
+
+      $nbVal = Null;
+      if($type=="url"){
+        $nbVal = count($db->listes("url", $val));
+      }else if($type=="id"){
+        $nbVal = count($db->listes("id", $val));
+      }
+
       echo $nbVal;
       $retVal = Null;
 
@@ -325,6 +376,9 @@ class Liste
 
       return $retVal;
     }
+
+
+
 
 
 

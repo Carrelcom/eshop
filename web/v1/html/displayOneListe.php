@@ -1,12 +1,12 @@
 <?php
 $display = false;
 
-if(isset($_GET['listeId'])){
-  $id = $_GET['listeId'];
+if(isset($_GET['listUrl'])){
+  $url = $_GET['listUrl'];
 
-  if($_GET['listeId'] <> NULL){
+  if($_GET['listUrl'] <> NULL){
 
-    $booListExist = Liste::isListExist($id);
+    $booListExist = Liste::isListExist('url',$url);
 
 
     if(!$booListExist){
@@ -16,7 +16,7 @@ if(isset($_GET['listeId'])){
     }else{
 
       $list = new Liste();
-      $list = Liste::getOneList($id);
+      $list = Liste::getOneList('url',$url);
       $arrItems = $list->getItems();
       $display = true;
     }
@@ -54,6 +54,7 @@ $htmlListeCat .= "</select>";
     <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=addItem" onSubmit="alert( 'Thank you for your feedback!' );">
         <div class="form-group">
           <input type="hidden" name="Liste" id="Liste" value="<?php echo $list->getIdListe(); ?>"/>
+          <input type="hidden" name="Url" id="Url" value="<?php echo $list->getUrl(); ?>"/>
         </div>
         <div class="form-group">
             <input type="text" name="Product" id="Product" class="form-control" placeholder="Product to add" required/>

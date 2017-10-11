@@ -20,6 +20,7 @@
 			return $fieldValue;
 		}
 
+
 		// Récupère les données d'une liste déroulante
 		public static function getSelect($method, $listeName,$multiple){
 			$selection_liste = null;
@@ -45,6 +46,7 @@
 
 			return $selection_liste;
 	}
+
 
 		// Récupérer valeur d'une checkbox.
 		public static function getCheckbox($unique, $method, $checkboxName){
@@ -100,5 +102,15 @@
 		{
 			return htmlentities($string);
 		}
+
+
+		// encrypt password
+		public static function hashpwd1($pwd){
+				return hash('ripemd160', $pwd);
+
+		}
+
+
+
 	}
 ?>
