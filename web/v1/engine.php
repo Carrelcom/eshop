@@ -14,8 +14,9 @@ if(isset($_GET['action'])){
 
 
 switch ($act) {
-  case 'createList':
+  case 'createlist':
     Engine::saveOneListe();
+
     break;
   case 'addItem';
     Engine::addItemToListe();
@@ -68,12 +69,12 @@ public static function getCategorie(){
     $liste->setEndDate(Securite::getField('POST','Date'));
     $liste->setDescription(Securite::getField('POST','Description'));
     $liste->setPublic(Securite::getCheckbox(true,'POST','public'));
+
     $url = $liste->saveListe();
 
-
-    Utility::redirect("displayOneListe", array("listUrl" => $url) );
-    //header('location:page.php?page=displayOneListe&listUrl='.$url);
+    Utility::redirect("listeManagement", array("listeUrl" => $url) );
   }
+
 
   public static function addItemToListe(){
     $item  = new Item();
@@ -84,7 +85,7 @@ public static function getCategorie(){
 
     $item->saveItem();
     $url = Securite::getField('POST','Url');
-    Utility::redirect("displayOneListe", array("listUrl" => $url) );
+    Utility::redirect("listeManagement", array("listeUrl" => $url) );
 
   }
 

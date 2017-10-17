@@ -4,10 +4,17 @@
 require_once('../../srv/Autoloader.class.php');
 Autoloader::register();
 
-$session = "";
-$mail = "";
-
 if ( Utility::is_session_started() === FALSE ) session_start();
+$connected = false;
+$mail = "";
+$labelList = "";
+$disabled = "";
+if(isset($_SESSION['mail'])){
+  $connected = true;
+  $mail = $_SESSION['mail'];
+  $disabled = "disabled='disabled'";
+}
+
 
 ?>
 <!DOCTYPE html>
@@ -51,52 +58,55 @@ if ( Utility::is_session_started() === FALSE ) session_start();
             <div class="overlay">
                 <div class="container">
                     <div class="row">
-                        <div class="col-md-7">
+                        <div class="col-md-9">
 
                             <!-- /.logo -->
                             <div class="logo wow fadeInDown"> <a href="">Eshop</a></div>
 
                             <!-- /.main title -->
                             <h1 class="wow fadeInLeft">
-                                Do not forget your shopping list anymore.
+                                Let's begin...
                             </h1>
 
                             <!-- /.header paragraph -->
                             <div class="landing-text wow fadeInUp">
-                                <p>eshop is the lightest, simplest, smartest tool to create your shared shopping list.</p>
-                                <h3>Nothing lasts, nothing waste</h3>
+
+                              <form method="POST" id="contact-form" class="form-horizontal" action="page.php?page=createlist" onSubmit="alert( 'Thank you for your feedback!' );">
+                                  <div class="form-group col-md-7">
+                                      <input type="text" name="tempLabel" id="tempLabel" class="form-control" placeholder="What is it about..." required/>
+                                  </div>
+
+                                  <div class="form-group  col-md-3">
+                                      <input type="submit" name="submit" value="I create my list" class="btn btn-primary" />
+                                  </div>
+                              </form>
                             </div>
 
-                            <!-- /.header button -->
+                            <!-- /.header button
                             <div class="head-btn wow fadeInLeft">
                                 <a href="#feature" class="btn-primary">Discover</a>
                                 <a href="#download" class="btn-default">Register</a>
                             </div>
-
+                            -->
 
 
                         </div>
 
                         <!-- /.signup form -->
-                        <div class="col-md-5">
+                        <div class="col-md-3">
 
                             <div class="signup-header wow fadeInUp">
                                 <h3 class="form-title text-center">Login</h3>
-                                <form class="form-header" action="http://moxdesign.us10.list-manage.com/subscribe/post" role="form" method="POST" id="#">
-                                    <input type="hidden" name="u" value="503bdae81fde8612ff4944435">
-                                    <input type="hidden" name="id" value="bfdba52708">
-                                    <div class="form-group">
-                                        <input class="form-control input-lg" name="login" id="name" type="text" placeholder="your email" required>
-                                    </div>
-                                    <div class="form-group">
-                                        <input class="form-control input-lg" name="passwd" id="email" type="email" placeholder="Password" required>
-                                    </div>
-                                    <div class="form-group last">
-                                        <input type="submit" class="btn btn-warning btn-block btn-lg" value="Login">
-                                    </div>
-                                    <br/>
+                                <?php
+                                  if(!$connected){
+                                    include('html/login-form.php');
+                                  }else{
+                                    echo "Bonjour ".$mail;
+                                  }
 
-                                </form>
+
+                                ?>
+                                <br/>
                             </div>
 
                         </div>

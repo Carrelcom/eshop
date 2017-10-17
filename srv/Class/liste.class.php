@@ -15,7 +15,31 @@ class Liste
   private $public;
   private $description ;
   private $url;
+  private $adminUrl;
 
+  /**
+   * Get the value of Admin Url
+   *
+   * @return mixed
+   */
+  public function getAdminUrl()
+  {
+      return $this->adminUrl;
+  }
+
+  /**
+   * Set the value of Admin Url
+   *
+   * @param mixed AdminUrl
+   *
+   * @return self
+   */
+  public function setAdminUrl($adminUrl)
+  {
+      $this->adminUrl = $adminUrl;
+
+      return $this;
+  }
     /**
      * Get the value of Liste Name
      *
@@ -146,6 +170,18 @@ class Liste
         return $this->public;
     }
 
+    /**
+    * Get The value of PUblic for Html Form
+    *
+    */
+    public function getPublicIHM(){
+      if ($this->public == 1){
+        return "checked";
+      }else{
+        return "";
+      }
+    }
+
 
 
     /**
@@ -246,6 +282,9 @@ class Liste
       // SI ID NULL --> INSERT
       if($this->idListe == NULL){
         $url = Utility::generateUniqueUrl($this->adminEmail, $this->listeName, $this->endDate);
+        $urlAdmin = Utility::generateUniqueUrl($this->listeName, $this->adminEmail,"admin");
+
+        echo "url admin [".$urlAdmin."]";
         $liste = $db->listes()->insert(array(
 
           "label" =>   $this->listeName,
@@ -254,7 +293,8 @@ class Liste
         	"date_echeance" => $this->endDate,
           "public" => $this->public,
           "commentaires" => $this->description,
-          "url" => $url
+          "url" => $url,
+          "admin_url" => $urlAdmin
 
         ));
 
@@ -292,7 +332,9 @@ class Liste
       }
 
       $arrlistes = array();
+
       foreach ($listes as $liste) {
+
 
         $objliste = new Liste();
         $objliste->setListeName($liste['label']);
@@ -304,6 +346,7 @@ class Liste
         $objliste->setDescription($liste['commentaires']);
         $objliste->setIdListe($liste['id']);
         $objliste->setUrl($liste['url']);
+        $objliste->setAdminUrl($liste['admin_url']);
 
         array_push($arrlistes,$objliste);
 
@@ -325,11 +368,14 @@ class Liste
       $arrlistes = array();
       $objliste = new Liste();
       $rq = null;
-      if($type=="url"){
+
+      $rq = $db->listes($type, $val);
+
+      /*if($type=="url"){
         $rq = $db->listes("url", $val);
       }else if($type=="id"){
         $rq = $db->listes("id", $val);
-      }
+      }*/
 
       foreach ($rq as $liste) {
 
@@ -342,6 +388,7 @@ class Liste
         $objliste->setDescription($liste['commentaires']);
         $objliste->setIdListe($liste['id']);
         $objliste->setUrl($liste['url']);
+        $objliste->setAdminUrl($liste['admin_url']);
 
       }
       return $objliste;
@@ -359,13 +406,15 @@ class Liste
       $db = db::getConnexion();
 
       $nbVal = Null;
-      if($type=="url"){
+
+      $nbVal = count($db->listes($type, $val));
+      /*if($type=="url"){
         $nbVal = count($db->listes("url", $val));
       }else if($type=="id"){
         $nbVal = count($db->listes("id", $val));
-      }
+      }*/
 
-      echo $nbVal;
+      //echo $nbVal;
       $retVal = Null;
 
       if($nbVal == 1){

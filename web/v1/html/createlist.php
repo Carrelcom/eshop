@@ -1,16 +1,24 @@
+<?php
+$labelList = "";
 
-                        <p>
-                            Liste creation
-                        </p>
-                        <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=createList" onSubmit="alert( 'Thank you for your feedback!' );">
+if(isset($_POST['tempLabel'])){
+  if($_POST['tempLabel'] <> ""){
+      $labelList = $_POST['tempLabel'];
+  }
+}
+
+
+ ?>
+
+                        <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=createlist" onSubmit="alert( 'Thank you for your feedback!' );">
                             <div class="form-group">
-                                <input type="text" name="ListeName" id="ListName" class="form-control" placeholder="The list name" required/>
+                                <input type="text" name="ListeName" id="ListName" class="form-control" value="<?php echo $labelList; ?>" placeholder="The list name" required/>
                             </div>
                             <div class="form-group">
-                                <input type="text" name="Name" id="Name" class="form-control" placeholder="Your Name" required/>
+                                <input type="text" name="Name" id="Name" class="form-control" placeholder="Your Name"  required/>
                             </div>
                             <div class="form-group">
-                                <input type="mail" name="Mail" id="Mail" class="form-control" placeholder="Your mail" required/>
+                                <input type="mail" name="Mail" id="Mail" class="form-control" placeholder="Your mail" value="<?php echo $mail; ?>" <?php echo $disabled; ?> required/>
                             </div>
                             <div class="form-group">
                                 <input type="date" name="Date" id="Date" class="form-control" placeholder="Available until ..." required/>

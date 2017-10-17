@@ -159,7 +159,7 @@ class Item
         $db = db::getConnexion();
 
 
-        foreach ($db->items("liste_id", $idListe) as $item) {
+        foreach ($db->items("liste_id", $idListe)->order("category_id") as $item) {
           $obj = new Item();
 
           $obj->setItemlabel($item["label"]);

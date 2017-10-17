@@ -116,7 +116,7 @@ public function register(){
 
 
   $liste = $db->users()->insert(array(
-      "mail"      => $this->mail,
+      "mail"      => strtolower($this->mail),
       "nickname"  => $this->nickname,
       "pwd"       => Securite::hashpwd1($this->pwd)
     ));
@@ -128,7 +128,7 @@ public function register(){
   *
   */
   public static function login($mail, $pwd){
-
+    $mail = strtolower($mail);
     $db = db::getConnexion();
     $pwd = Securite::hashpwd1($pwd);
     $users = $db->users->where("mail = ? AND pwd = ?", $mail, $pwd);

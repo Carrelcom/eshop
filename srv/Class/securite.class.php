@@ -7,6 +7,13 @@
 		*/
 		public static function getField($method, $fieldName){
 			$fieldValue = Null;
+			/*echo "dans securite get field : method : [".$method."]";
+			echo "<br/>";
+			echo "dans securite get field : fieldname : [".$fieldName."]";
+			echo "<br/>";
+			echo "dans securite get field : GET fieldname : [".$_GET[$fieldName]."]";
+			echo "<br/>";
+*/
 			if($method=="POST"){
 				if(isset($_POST[$fieldName])){
 					$fieldValue = self::bdd($_POST[$fieldName]);
@@ -15,6 +22,7 @@
 			}elseif ($method=="GET") {
 				if(isset($_GET[$fieldName])){
 					$fieldValue = self::bdd($_GET[$fieldName]);
+					$fieldValue = $_GET[$fieldName];
 				}
 			}
 			return $fieldValue;

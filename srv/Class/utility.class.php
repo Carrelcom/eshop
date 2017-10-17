@@ -29,13 +29,13 @@ class Utility
   public static function redirect($page, $param){
 
     $url = "location:page.php?page=".$page;
-    echo "AVANT PARAM [".$url."]";
+    
     if($param <> NULL){
       foreach ($param as $key => $value) {
         $url .= "&".$key."=".$value;
       }
     }
-    echo "APRES PARAM [".$url."]";
+
     header($url);
   }
 
@@ -53,6 +53,8 @@ class Utility
       }
       return FALSE;
   }
+
+
 
 }
 

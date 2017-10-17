@@ -4,11 +4,12 @@ if ( Utility::is_session_started() === FALSE ) session_start();
 
 $connected = false;
 $mail = "";
-
+$labelList = "";
+$disabled = "";
 if(isset($_SESSION['mail'])){
   $connected = true;
   $mail = $_SESSION['mail'];
-
+  $disabled = "readonly='readonly'";
 }
 
 ?>
@@ -29,6 +30,9 @@ if(isset($_SESSION['mail'])){
         <link href="css/owl.theme.css" rel="stylesheet">
         <link href="css/owl.carousel.css" rel="stylesheet">
 
+        <!-- CSS FILES CUSTO -->
+        <link href="custo/jquery-ui/jquery-ui.min.css" rel="stylesheet">
+
         <!-- Colors -->
         <link href="css/css-index.css" rel="stylesheet" media="screen">
         <!-- <link href="css/css-index-green.css" rel="stylesheet" media="screen"> -->
@@ -39,6 +43,8 @@ if(isset($_SESSION['mail'])){
 
         <!-- Google Fonts -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" />
+
+
     </head>
 
     <body data-spy="scroll" data-target="#navbar-scroll">
@@ -71,17 +77,14 @@ if(isset($_SESSION['mail'])){
                             <?php } ?>
                             <li><a href="index.php">Home</a></li>
                             <li><a href="page.php?page=createlist">créer une liste</a></li>
-                            <li><a href="page.php?page=register">Register</a></li>
                             <? if(!$connected){ ?>
+                              <li><a href="page.php?page=register">Register</a></li>
                               <li><a href="page.php?page=login">Login</a></li>
                             <?php } ?>
                             <? if($connected){ ?>
+                              <li><a href="page.php?page=displaylist">Mes listes</a></li>
                               <li><a href="engine.php?action=logout">Logout</a></li>
                             <?php } ?>
-
-                            <li><a href="page.php?page=createlist">createList</a></li>
-                            <li><a href="page.php?page=displaylist">displaylist</a></li>
-                            <li><a href="page.php?page=register">Register</a></li>
 
 
                         </ul>
@@ -135,11 +138,25 @@ if(isset($_SESSION['mail'])){
         <script src="js/wow.min.js"></script>
         <script src="js/owl.carousel.min.js"></script>
         <script src="js/ekko-lightbox-min.js"></script>
+        <!-- /. Custo JS files -->
+        <script src="custo/jquery-ui/jquery-ui.min.js"></script>
+
+
+
         <script type="text/javascript">
-                                    $( document ).delegate( '*[data-toggle="lightbox"]', 'click', function ( event ) {
-                                        event.preventDefault();
-                                        $( this ).ekkoLightbox();
-                                    } );
+                  $( document ).delegate( '*[data-toggle="lightbox"]', 'click', function ( event ) {
+                      event.preventDefault();
+                      $( this ).ekkoLightbox();
+                  } );
+
+                  //Date Picker liste management
+                  $( function() {
+                    $( "#EndDate" ).datepicker();
+                    $( "#EndDate" ).datepicker("option", "dateFormat", "dd/mm/yy");
+                    $( "#EndDate" ).datepicker("setDate",$(this).val());
+
+                  } );
+
         </script>
         <script>
             new WOW().init();
