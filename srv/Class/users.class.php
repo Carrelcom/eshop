@@ -4,6 +4,8 @@
  */
 class Users
 {
+
+private $id;
 private $mail;
 private $pwd;
 private $nickname;
@@ -123,6 +125,51 @@ public function register(){
   echo $liste;
   }
 
+
+
+  /**
+  * Update USER
+  *
+  */
+  public function update($currentMail){
+    $row = NULL;
+    $result = new Result();
+
+    if(self::checkMail($this->mail) == false){
+      $db = db::getConnexion();
+      $listesUpdated = Liste::updateMultipleListes("mail_admin", $currentMail,$this->mail);
+
+      if($listesUpdated){ // SI LA MISE A JOUR DES LISTES EST OK
+        $user = $db->users[$this->id];
+        $user["mail"] = $this->mail;
+        $user["nickname"] = $this->nickname;
+
+        $row = $user->update(); // MAJ DE LA TABLE USER
+      }else{ // SINON EXECUTION DE LA MAJ ARRIERE DES LISTES POUR RECUPERER LES LISTES QUI AURAIENT ETE MAJ.
+        Liste::updateMultipleListes("mail_admin", $this->mail, $currentMail);
+      }
+
+      if($row > 0){ // SI LA MISE A JOUR DES TABLES LISTES ET USER EST OK
+        $result->setStatus(true);
+        $result->setParams("msg","update-user-ok");
+        session_start();
+        $_SESSION['mail'] = $this->mail;
+      }else{
+        $result->setStatus(false);
+        $result->setParams("msg","update-user-ko");
+        //$result->setParams("listeUrl",$url );
+      }
+
+    }else{
+      $result->setStatus(false);
+      $result->setParams("msg","Mail existe deja dans la base");
+    }
+
+
+    return $result;
+
+    }
+
   /**
   * Login
   *
@@ -154,7 +201,6 @@ public function register(){
 /*
 * Fonction de déconnexion
 *
-
 */
 public static function logout(){
   session_start();
@@ -171,12 +217,68 @@ public static function logout(){
 }
 
 
+/**
+* Récupération d'un utilisateur en fonction du mail
+*
+*/
+public static function getUser($mail){
 
-public static function createCookies($name, $time, $value){
+  $db = db::getConnexion();
 
+  $obj = new Users();
+  $rq = null;
+  $rq = $db->users("mail", $mail);
+
+  foreach ($rq as $user) {
+    $obj->setId($user['id']);
+    $obj->setNickname($user['nickname']);
+    $obj->setMail($user['mail']);
+    $obj->setDatecreation($user['date_inscription']);
+
+  }
+
+  return $obj;
+
+}
+/**
+* Verifie si le mail en param est déjà dans la table user.
+*
+*/
+public static function checkMail($mail){
+
+  $db = db::getConnexion();
+  if(count($db->users("mail", $mail))==1){
+    return true;
+  }else{
+    return false;
+  }
 }
 
 
+
+    /**
+     * Get the value of Id
+     *
+     * @return mixed
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * Set the value of Id
+     *
+     * @param mixed id
+     *
+     * @return self
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
+
+        return $this;
+    }
 
 }
 

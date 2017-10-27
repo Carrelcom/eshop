@@ -33,14 +33,15 @@ if(isset($_SESSION['mail'])){
         <link href="css/owl.theme.css" rel="stylesheet">
         <link href="css/owl.carousel.css" rel="stylesheet">
 
-        <!-- Colors -->
-        <link href="css/css-index.css" rel="stylesheet" media="screen">
+        <!-- Colors
+        <link href="css/css-index.css" rel="stylesheet" media="screen">-->
+
         <!-- <link href="css/css-index-green.css" rel="stylesheet" media="screen"> -->
         <!-- <link href="css/css-index-purple.css" rel="stylesheet" media="screen"> -->
         <!-- <link href="css/css-index-red.css" rel="stylesheet" media="screen"> -->
-        <!-- <link href="css/css-index-orange.css" rel="stylesheet" media="screen"> -->
+        <link href="css/css-index-orange.css" rel="stylesheet" media="screen">
         <!-- <link href="css/css-index-yellow.css" rel="stylesheet" media="screen"> -->
-
+        <link href="custo/css/custo.css" rel="stylesheet" media="screen">
         <!-- Google Fonts -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" />
 
@@ -53,25 +54,28 @@ if(isset($_SESSION['mail'])){
         <div id="top"></div>
 
         <!-- /.parallax full screen background image -->
-        <div class="fullscreen landing parallax" style="background-image:url('images/bg.jpg');" data-img-width="2000" data-img-height="1333" data-diff="100">
+        <div class="fullscreen landing parallax" >
 
             <div class="overlay">
-                <div class="container">
+                <div class="container" id="bandeauHautHome">
                     <div class="row">
-                        <div class="col-md-9">
+                        <div class="col-md-9 col-sm-12 col-xs-12">
 
                             <!-- /.logo -->
-                            <div class="logo wow fadeInDown"> <a href="">Eshop</a></div>
+                            <div class=" wow fadeInDown"> <a href=""><img src="custo/images/logo.png"/></a></div>
 
                             <!-- /.main title -->
                             <h1 class="wow fadeInLeft">
-                                Let's begin...
+                                N'oubliez plus vos listes de courses
                             </h1>
+                            <h2 class="wow fadeInLeft">
+                                Créer une liste en 1 click
+                            </h2>
 
                             <!-- /.header paragraph -->
                             <div class="landing-text wow fadeInUp">
 
-                              <form method="POST" id="contact-form" class="form-horizontal" action="page.php?page=createlist" onSubmit="alert( 'Thank you for your feedback!' );">
+                              <form method="POST" id="contact-form" class="form-horizontal" action="page.php?page=createlist" >
                                   <div class="form-group col-md-7">
                                       <input type="text" name="tempLabel" id="tempLabel" class="form-control" placeholder="What is it about..." required/>
                                   </div>
@@ -93,24 +97,17 @@ if(isset($_SESSION['mail'])){
                         </div>
 
                         <!-- /.signup form -->
-                        <div class="col-md-3">
+                        <div class="col-md-3 hidden-xs hidden-sm">
 
-                            <div class="signup-header wow fadeInUp">
-                                <h3 class="form-title text-center">Login</h3>
-                                <?php
-                                  if(!$connected){
-                                    include('html/login-form.php');
-                                  }else{
-                                    echo "Bonjour ".$mail;
-                                  }
+                            <div class="landing wow fadeInUp">
 
-
-                                ?>
+                                <img  src="custo/images/shoppinglist.png"/>
                                 <br/>
                             </div>
 
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
@@ -126,7 +123,7 @@ if(isset($_SESSION['mail'])){
                             <span class="icon-bar"></span>
                             <span class="icon-bar"></span>
                         </button>
-                        <a class="navbar-brand site-name" href="#top">ESHOP</a>
+                        <a class="navbar-brand site-name" href="#top"><a href=""><img src="custo/images/logo2.png"/></a></a>
                     </div>
 
                     <div id="navbar-scroll" class="collapse navbar-collapse navbar-backyard navbar-right">
@@ -303,7 +300,7 @@ if(isset($_SESSION['mail'])){
 
                             <!-- /.contact form -->
                             <div class="col-sm-7 contact-right">
-                                <form method="POST" id="contact-form" class="form-horizontal" action="contactengine.php" onSubmit="alert( 'Thank you for your feedback!' );">
+                                <form method="POST" id="contact-form" class="form-horizontal" action="contactengine.php" >
                                     <div class="form-group">
                                         <input type="text" name="Name" id="Name" class="form-control wow fadeInUp" placeholder="Name" required/>
                                     </div>
@@ -337,7 +334,7 @@ if(isset($_SESSION['mail'])){
                             <li><a class="wow fadeInUp" href="https://instagram.com/" data-wow-delay="0.6s"><i class="fa fa-instagram"></i></a></li>
                         </ul>
                     </div>
-                    <div class="text-center wow fadeInUp" style="font-size: 14px;">Copyright Backyard 2015 - Template by  <a href="http://bootstrapthemes.co/" target="_blank">BootstrapThemes</a></div>
+                    <div class="text-center wow fadeInUp" style="font-size: 14px;">Copyright eshop</div>
                     <a href="#" class="scrollToTop"><i class="pe-7s-up-arrow pe-va"></i></a>
                 </div>
             </div>

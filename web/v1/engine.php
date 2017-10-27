@@ -4,6 +4,7 @@ require_once('../../srv/Autoloader.class.php');
 Autoloader::register();
 
 
+
 // ACTION A REALISER
 $act = Null;
 if(isset($_GET['action'])){
@@ -14,12 +15,14 @@ if(isset($_GET['action'])){
 
 
 switch ($act) {
-  case 'createlist':
-    Engine::saveOneListe();
-
+  case 'saveList':
+    Engine::saveList();
     break;
   case 'addItem';
     Engine::addItemToListe();
+  break;
+  case 'delItem';
+    Engine::deleteItemFromListe();
   break;
   case 'register';
     Engine::register();
@@ -30,6 +33,10 @@ switch ($act) {
   case 'logout';
     Engine::logout();
   break;
+  case 'updateUser';
+    Engine::updateUser();
+  break;
+
   default:
     # code...
     break;
@@ -57,83 +64,139 @@ public static function getCategorie(){
   return Category::getCategories();
 }
 
-  //Enregistrer une liste
-  public static function saveOneListe(){
+public static function getUser($mail){
+  return Users::getUser($mail);
+}
 
-    $liste = new Liste();
+//Enregistrer une liste
+public static function saveList(){
 
+  if(isset($_GET['refer0'])){   $referFail = Securite::getField('GET','refer0');  }
+  if(isset($_GET['refer1'])){   $referSuccess = Securite::getField('GET','refer1'); }
+
+  $liste = new Liste();
+
+  if(isset($_POST['ListeId'])){
+       $liste->setIdListe(Securite::getField('POST','ListeId'));
+  }else{
     $liste->setIdListe(NULL);
-    $liste->setListeName(Securite::getField('POST','ListeName'));
-    $liste->setAdminName(Securite::getField('POST','Name'));
-    $liste->setAdminEmail(Securite::getField('POST','Mail'));
-    $liste->setEndDate(Securite::getField('POST','Date'));
-    $liste->setDescription(Securite::getField('POST','Description'));
-    $liste->setPublic(Securite::getCheckbox(true,'POST','public'));
+  }
 
-    $url = $liste->saveListe();
+  $liste->setListeName(Securite::getField('POST','ListeName'));
+  $liste->setAdminName(Securite::getField('POST','Name'));
+  $liste->setAdminEmail(Securite::getField('POST','Mail'));
+  $liste->setEndDate(new DateTime(Securite::getField('POST','EndDate')));
+  $liste->setDescription(Securite::getField('POST','Description'));
+  $liste->setPublic(Securite::getCheckbox(true,'POST','public'));
 
-    Utility::redirect("listeManagement", array("listeUrl" => $url) );
+  $result = $liste->saveListe();
+
+  if($result->getStatus()){
+      Utility::redirect($referSuccess, $result->getStatusToString().$result->getParams());
+  }else{
+      Utility::redirect($referFail,  $result->getStatusToString().$result->getParams());
   }
 
 
-  public static function addItemToListe(){
-    $item  = new Item();
-    $item->setItemlabel(Securite::getField('POST','Product'));
-    $item->setItemQty(Securite::getField('POST','Quantity'));
-    $item->setItemCategoryId(Securite::getSelect('POST','Categorie', null));
-    $item->setItemListeId(Securite::getField('POST','Liste'));
 
-    $item->saveItem();
-    $url = Securite::getField('POST','Url');
-    Utility::redirect("listeManagement", array("listeUrl" => $url) );
+}
 
+/**
+* Ajouter un composant à la liste
+*
+*/
+public static function addItemToListe(){
+  $item  = new Item();
+  $item->setItemlabel(Securite::getField('POST','Product'));
+  $item->setItemQty(Securite::getField('POST','Quantity'));
+  $item->setItemCategoryId(Securite::getSelect('POST','Categorie', null));
+  $item->setItemListeId(Securite::getField('POST','Liste'));
+  $item->setItemAuthor(Securite::getField('POST','Author'));
+
+  $result = $item->saveItem();
+
+  $result->setParams("listeUrl",Securite::getField('POST','Url'));
+
+  Utility::redirect("listeManagement", $result->getStatusToString().$result->getParams() );
+
+}
+
+
+public static function deleteItemFromListe(){
+
+  $item = new Item();
+  $item->setItemId(Securite::getField('GET','iditem'));
+  $result = $item->deleteItem();
+  $result->setParams("listeUrl",Securite::getField('GET','url'));
+
+  Utility::redirect("listeManagement", $result->getStatusToString().$result->getParams() );
+}
+
+/**
+*  Inscription
+*/
+public static function register(){
+
+  $pwd1 = Securite::getField('POST','Pwd1');
+  $pwd2 = Securite::getField('POST','Pwd2');
+
+
+  if($pwd1 == $pwd2){
+    $user = new Users();
+
+    $user->setMail(Securite::getField('POST','Mail'));
+    $user->setPwd(Securite::getField('POST','Pwd1'));
+    $user->setNickName(Securite::getField('POST','Nickname'));
+
+    $user->register();
   }
+    Utility::redirect("register", null);
+}
 
-  /**
-  *  Inscription
-  */
-  public static function register(){
+// LOGIN
+public static function login(){
 
-    $pwd1 = Securite::getField('POST','Pwd1');
-    $pwd2 = Securite::getField('POST','Pwd2');
+  $mail = Securite::getField('POST','Mail');
+  $pwd = Securite::getField('POST','Pwd');
 
-
-    if($pwd1 == $pwd2){
-      $user = new Users();
-
-      $user->setMail(Securite::getField('POST','Mail'));
-      $user->setPwd(Securite::getField('POST','Pwd1'));
-      $user->setNickName(Securite::getField('POST','Nickname'));
-
-      $user->register();
-    }
-      Utility::redirect("register", null);
+  $ret = Users::login($mail,$pwd);
+  if($ret[0]){
+    echo $ret[1];
+  }else{
+    echo $ret[1];
   }
+  Utility::redirect("displaylist", null);
+}
 
-  // LOGIN
-  public static function login(){
-
-    $mail = Securite::getField('POST','Mail');
-    $pwd = Securite::getField('POST','Pwd');
-
-    $ret = Users::login($mail,$pwd);
-    if($ret[0]){
-      echo $ret[1];
-    }else{
-      echo $ret[1];
-    }
-    Utility::redirect("displaylist", null);
+public static function logout(){
+  $ret = Users::logout();
+  if($ret[0]){
+    echo $ret[1];
+  }else{
+    echo $ret[1];
   }
+  Utility::redirect("displaylist", null);
+}
 
-  public static function logout(){
-    $ret = Users::logout();
-    if($ret[0]){
-      echo $ret[1];
-    }else{
-      echo $ret[1];
-    }
-    Utility::redirect("displaylist", null);
-  }
+
+/**
+* Mise à jour d'un user hors Mdp
+*
+*
+*/
+public static function updateUser(){
+  $currentMail = Securite::getField('POST','currentMail');
+
+  $user = new Users();
+  $user->setId(Securite::getField('POST','idUser'));
+  $user->setNickname(Securite::getField('POST','Nickname'));
+  $user->setmail(Securite::getField('POST','Mail'));
+  $result = $user->update($currentMail);
+  Utility::redirect("profile", $result->getStatusToString().$result->getParams());
+  
+}
+
+
 
 }
 

@@ -27,8 +27,14 @@ class db{
     $MDP = "";
 
     $dsn = "mysql:dbname=".$DB.";host:".$HOST."";
+    try{
+      $connection = new PDO($dsn,$USER,$MDP);
+    }catch (PDOException $Exception){
+        Utility::redirect('error','code=2002');
+        //throw new Exception($Exception->getMessage(), (int) $Exception->getCode());
 
-    $connection = new PDO($dsn,$USER,$MDP);
+    }
+
 
     $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING);
     $connection->setAttribute(PDO::ATTR_CASE, PDO::CASE_LOWER);

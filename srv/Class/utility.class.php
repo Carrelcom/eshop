@@ -12,11 +12,11 @@ class Utility
   public static function generateUniqueUrl($id, $pre, $suf){
 
     $url;
-    $part0 = substr(time(),0,4)."-";
+    $part0 = hash('md2',microtime(true));
     $part1 = substr(hash('ripemd160', $pre),0,3);
     $part2 = hash('md2',$id);
     $part3 = substr(hash('ripemd160', $suf),0,3);
-    $ret = $part1.$part2.$part3;
+    $ret = hash('md2',$part0.$part1.$part2.$part3);
 
     return $ret;
 
@@ -29,17 +29,23 @@ class Utility
   public static function redirect($page, $param){
 
     $url = "location:page.php?page=".$page;
-    
+
     if($param <> NULL){
-      foreach ($param as $key => $value) {
-        $url .= "&".$key."=".$value;
+      if(is_array($param)){
+        foreach ($param as $key => $value) {
+          $url .= "&".$key."=".$value;
+        }
+      }else{
+        $url.="&".$param;
       }
     }
+
 
     header($url);
   }
 
   /**
+  * Controle le démarrage de la session
   * @return bool
   */
   public static function is_session_started()
@@ -53,6 +59,7 @@ class Utility
       }
       return FALSE;
   }
+
 
 
 

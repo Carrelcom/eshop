@@ -51,7 +51,7 @@ $htmlListeCat .= "</select>";
       }
     ?>
 
-    <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=addItem" onSubmit="alert( 'Thank you for your feedback!' );">
+    <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=addItem" >
         <div class="form-group">
           <input type="hidden" name="Liste" id="Liste" value="<?php echo $list->getIdListe(); ?>"/>
           <input type="hidden" name="Url" id="Url" value="<?php echo $list->getUrl(); ?>"/>

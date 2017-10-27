@@ -23,7 +23,7 @@ $htmlListeCat .= "</select>";
           <li>Date d'&eacute;ch&eacute;ance *DATE D'ECHEANCE*</li>
         </ul>
     </p>
-    <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=addItem" onSubmit="alert( 'Thank you for your feedback!' );">
+    <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=addItem" >
         <div class="form-group">
           <?php echo $htmlListeList; ?>
         </div>

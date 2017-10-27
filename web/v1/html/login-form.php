@@ -1,4 +1,4 @@
-<form method="POST" id="contact-form" class="form-header" action="engine.php?action=login" onSubmit="alert( 'Thank you for your feedback!' );">
+<form method="POST" id="contact-form" class="form-header" action="engine.php?action=login" >
 
     <div class="form-group">
         <input type="text" name="Mail" id="Mail" class="form-control input-lg" placeholder="Your email" required/>

@@ -1,8 +1,7 @@
 <?php
-$display = false;
+
 if($connected && $mail <> ""){
-  $display = true;
-}
+
 
 $arrListes = Engine::GetListes(array('mail_admin'=>$mail));
 
@@ -38,3 +37,5 @@ $arrListes = Engine::GetListes(array('mail_admin'=>$mail));
         </table>
 
 </div>
+
+<?php } ?>

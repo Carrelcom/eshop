@@ -3,7 +3,7 @@
     <p>
         Inscription
     </p>
-    <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=register" onSubmit="alert( 'Thank you for your feedback!' );">
+    <form method="POST" id="contact-form" class="form-horizontal" action="engine.php?action=register" >
 
         <div class="form-group">
             <input type="text" name="Mail" id="Mail" class="form-control" placeholder="Your email" required/>

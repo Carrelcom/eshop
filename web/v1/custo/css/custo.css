@@ -1,0 +1,72 @@
+.overlay{
+  background:#9caaa6;
+}
+
+.btn-secondary {
+  background: #00777D;
+  transition: all 0.4s;
+}
+.btn-secondary:hover{
+  background: #025b5b;
+  transition: all 0.4s;
+}
+.btn-default{
+  border: 2px solid #F7A600;
+  color: #F7A600;
+  border-radius: 0;
+}
+
+.btn-default:hover{
+  border: 2px solid #F7A600;
+  color: #fff;
+  background:#F7A600;
+  -webkit-transition: all .8s ease;
+  transition: all .8s ease;
+}
+
+#contact-form .btn {
+  border: 0;
+  color: #fff;
+  background:#F7A600;
+
+}
+#contact-form .btn:hover {
+  background-color: #00777D;
+  -webkit-transition: all .2s ease;
+  transition: all .2s ease;
+}
+.navbar-default .navbar-nav > li > a:hover {
+  color: #00777D;
+  font-weight: 500;
+}
+.highlight{
+color:#F7A600;
+}
+.social li a{
+color:#F7A600;
+border: solid 1px #F7A600;
+}
+
+.social li a:hover{
+color:#fff;
+border: solid 1px #F7A600;
+background:#F7A600;
+-webkit-transition: all .2s ease;
+transition: all .2s ease;
+}
+
+a{
+color:#F7A600;
+}
+
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover, .navbar-default .navbar-nav > .active > a:focus{
+color:#F7A600;
+}
+
+#bandeauHautHome{
+padding:2em 1em 4em 1em;
+}
+.pe-7s-up-arrow:hover .pe-va:hover{
+color:#F7A600;
+}

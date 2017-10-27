@@ -10,8 +10,58 @@ class Item
   private $itemCategoryId;
   private $itemCategoryLabel;
   private $itemListeId;
+  private $itemId;
+  private $itemAuthor;
 
 
+
+      /**
+       * Get the value of Item Author
+       *
+       * @return mixed
+       */
+      public function getItemAuthor()
+      {
+          return $this->itemAuthor;
+      }
+
+      /**
+       * Set the value of Item Author
+       *
+       * @param mixed itemAuthor
+       *
+       * @return self
+       */
+      public function setItemAuthor($itemAuthor)
+      {
+          $this->itemAuthor = $itemAuthor;
+
+          return $this;
+      }
+
+      /**
+       * Get the value of Item Id
+       *
+       * @return mixed
+       */
+      public function getItemId()
+      {
+          return $this->itemId;
+      }
+
+      /**
+       * Set the value of Item Id
+       *
+       * @param mixed itemId
+       *
+       * @return self
+       */
+      public function setItemId($itemId)
+      {
+          $this->itemId = $itemId;
+
+          return $this;
+      }
 
     /**
      * Get the value of Itemlabel
@@ -139,17 +189,49 @@ class Item
     *
     */
     public function saveItem(){
+
+      $result = new Result();
       $db = db::getConnexion();
-        $item = $db->items()->insert(array(
+        $row = $db->items()->insert(array(
           "label" => $this->itemlabel,
           "quantity" => $this->itemQty,
           "category_id" => $this->itemCategoryId,
-          "liste_id" => $this->itemListeId
+          "liste_id" => $this->itemListeId,
+          "author"    =>  $this->itemAuthor
 
         ));
-        return $item;
-      }
 
+        if($row > 0){
+          $result->setStatus(true);
+          $result->setParams("msg","enregistrement-item-ok");
+          //$result->setParams("listeUrl",$url );
+        }else{
+          $result->setStatus(false);
+          $result->setParams("msg","enregistrement-item-ko");
+          //$result->setParams("listeUrl",$url );
+        }
+        return $result;
+      }
+    /**
+    * supprime un item
+    */
+    public  function deleteItem(){
+      $result = new Result();
+      $db = db::getConnexion();
+
+      $row = $db->items("id", $this->itemId)->delete();
+
+      if($row > 0){
+        $result->setStatus(true);
+        $result->setParams("msg","suppression-item-ok");
+        //$result->setParams("listeUrl",$url );
+      }else{
+        $result->setStatus(false);
+        $result->setParams("msg","suppression-item-ko");
+        //$result->setParams("listeUrl",$url );
+      }
+      return $result;
+    }
       /**
       * return all items of list
       *
@@ -166,6 +248,8 @@ class Item
           $obj->setItemQty($item["quantity"]);
           $obj->setItemCategoryId($item["category_id"]);
           $obj->setItemListeId($item["liste_id"]);
+          $obj->setItemId($item["id"]);
+          $obj->setItemAuthor($item['author']);
 
           array_push($arrResult,$obj);
 
@@ -173,6 +257,11 @@ class Item
 
         return $arrResult;
       }
+
+
+
+
+
 
 }
  ?>

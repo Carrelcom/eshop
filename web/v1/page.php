@@ -11,6 +11,18 @@ if(isset($_SESSION['mail'])){
   $mail = $_SESSION['mail'];
   $disabled = "readonly='readonly'";
 }
+$page = NULL;
+if(isset($_GET['page']) && $_GET['page']<>"" && $_GET['page']<>Null){
+  if(file_exists($filename)){
+    $page = $_GET['page'];
+  }
+
+
+ include('html/'.$page.'.php');
+}else{
+  echo "erreur 404, pas de page défini";
+}
+
 
 ?>
 
@@ -34,13 +46,13 @@ if(isset($_SESSION['mail'])){
         <link href="custo/jquery-ui/jquery-ui.min.css" rel="stylesheet">
 
         <!-- Colors -->
-        <link href="css/css-index.css" rel="stylesheet" media="screen">
+        <!-- <link href="css/css-index.css" rel="stylesheet" media="screen"> -->
         <!-- <link href="css/css-index-green.css" rel="stylesheet" media="screen"> -->
         <!-- <link href="css/css-index-purple.css" rel="stylesheet" media="screen"> -->
         <!-- <link href="css/css-index-red.css" rel="stylesheet" media="screen"> -->
-        <!-- <link href="css/css-index-orange.css" rel="stylesheet" media="screen"> -->
+        <link href="css/css-index-orange.css" rel="stylesheet" media="screen">
         <!-- <link href="css/css-index-yellow.css" rel="stylesheet" media="screen"> -->
-
+        <link href="custo/css/custo.css" rel="stylesheet" media="screen">
         <!-- Google Fonts -->
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" />
 
@@ -83,6 +95,7 @@ if(isset($_SESSION['mail'])){
                             <?php } ?>
                             <? if($connected){ ?>
                               <li><a href="page.php?page=displaylist">Mes listes</a></li>
+                              <li><a href="page.php?page=profile">Mon profil</a></li>
                               <li><a href="engine.php?action=logout">Logout</a></li>
                             <?php } ?>
 
@@ -124,7 +137,7 @@ if(isset($_SESSION['mail'])){
                             <li><a class="wow fadeInUp" href="https://instagram.com/" data-wow-delay="0.6s"><i class="fa fa-instagram"></i></a></li>
                         </ul>
                     </div>
-                    <div class="text-center wow fadeInUp" style="font-size: 14px;">Copyright Backyard 2015 - Template by  <a href="http://bootstrapthemes.co/" target="_blank">BootstrapThemes</a></div>
+                    <div class="text-center wow fadeInUp" style="font-size: 14px;">Copyright eshop</div>
                     <a href="#" class="scrollToTop"><i class="pe-7s-up-arrow pe-va"></i></a>
                 </div>
             </div>
@@ -152,10 +165,16 @@ if(isset($_SESSION['mail'])){
                   //Date Picker liste management
                   $( function() {
                     $( "#EndDate" ).datepicker();
-                    $( "#EndDate" ).datepicker("option", "dateFormat", "dd/mm/yy");
+                    $( "#EndDate" ).datepicker("option", "dateFormat", "yy-mm-dd");
                     $( "#EndDate" ).datepicker("setDate",$(this).val());
-
                   } );
+
+
+                  var $myGroup = $('#myGroup');
+                    $myGroup.on('show','.collapse', function() {
+                     $myGroup.find('.collapse.in').collapse('hide');
+                 });
+
 
         </script>
         <script>

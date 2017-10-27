@@ -277,41 +277,75 @@ class Liste
     public function saveListe(){
 
       $url = NULL;
-      $db = db::getConnexion();
+      $result = new Result();
 
-      // SI ID NULL --> INSERT
-      if($this->idListe == NULL){
-        $url = Utility::generateUniqueUrl($this->adminEmail, $this->listeName, $this->endDate);
-        $urlAdmin = Utility::generateUniqueUrl($this->listeName, $this->adminEmail,"admin");
 
-        echo "url admin [".$urlAdmin."]";
-        $liste = $db->listes()->insert(array(
+      if($this->checkMandatoryFields() == true){
 
-          "label" =>   $this->listeName,
-          "mail_admin" => $this->adminEmail,
-          "nom_admin" => $this->adminEmail,
-        	"date_echeance" => $this->endDate,
-          "public" => $this->public,
-          "commentaires" => $this->description,
-          "url" => $url,
-          "admin_url" => $urlAdmin
+        $db = db::getConnexion();
 
-        ));
+        // SI ID NULL --> INSERT
+        if($this->idListe == NULL){
+          //echo "url";
+          //echo "end date [".$this->endDate->format('Y-m-d H:i:s')."]";
+          //$date->format('Y-m-d H:i:s');
+          $url = Utility::generateUniqueUrl($this->adminEmail, $this->listeName, $this->endDate->format('Y-m-d H:i:s'));
+          //echo "urladmin";
+          $urlAdmin = Utility::generateUniqueUrl($this->listeName, $this->adminEmail,"admin");
 
-      }elseif(is_integer($this->idListe)){
-        // SI L'ID n'est pas NULL --> UPDATE AVEC LE NUMERO D'ID
-        $liste = $db->listes[$this->idListe];
+          $row = $db->listes()->insert(array(
+            "id" => $this->idListe,
+            "label" =>   $this->listeName,
+            "mail_admin" => $this->adminEmail,
+            "nom_admin" => $this->adminName,
+          	"date_echeance" => $this->endDate,
+            "public" => $this->public,
+            "commentaires" => $this->description,
+            "url" => $url,
+            "admin_url" => $urlAdmin
+          ));
 
-        $liste["label"] = $this->listeName;
-        $liste["date_echeance"] = $this->endDate;
-        $liste["public"] = $this->public;
-        $liste["commentaires"] = $this->description;
-        $url = $this->url;
+        }else{
 
-        $liste->update();
+          $liste = $db->listes[$this->idListe];
+          $url = $liste["url"];
+
+          $liste["label"] = $this->listeName;
+          $liste["nom_admin"] = $this->adminName;
+          $liste["date_echeance"] = $this->endDate->format("Y-m-d H:i:s");
+          $liste["commentaires"] = $this->description;
+
+          $row = $liste->update();
+        }
+
+
+        if($row > 0){
+          $result->setStatus(true);
+          $result->setParams("msg","enregistrement-liste-ok");
+          $result->setParams("listeUrl",$url );
+        }else{
+          $result->setStatus(false);
+          $result->setParams("msg","enregistrement-liste-ko");
+          $result->setParams("listeUrl",$url );
+        }
+
+
+      }else{
+        foreach ($this->checkMandatoryFields() as $value) {
+          $result->setParams('msg',$value);
+        }
+
+        $result->setStatus(false);
+
+
       }
-      return $url;
+
+      return $result;
+
     }
+
+
+
     // Get all items of current liste
     // return items arr
     public function getItems(){
@@ -328,14 +362,12 @@ class Liste
       if($filter === NULL){
         $listes = $db->listes();
       }else{
-          $listes = $db->listes($filter);
+          $listes = $db->listes($filter)->order("date_creation DESC");
       }
 
       $arrlistes = array();
 
       foreach ($listes as $liste) {
-
-
         $objliste = new Liste();
         $objliste->setListeName($liste['label']);
         $objliste->setAdminName($liste['nom_admin']);
@@ -347,11 +379,8 @@ class Liste
         $objliste->setIdListe($liste['id']);
         $objliste->setUrl($liste['url']);
         $objliste->setAdminUrl($liste['admin_url']);
-
         array_push($arrlistes,$objliste);
-
       }
-
 
       return $arrlistes;
 
@@ -370,12 +399,6 @@ class Liste
       $rq = null;
 
       $rq = $db->listes($type, $val);
-
-      /*if($type=="url"){
-        $rq = $db->listes("url", $val);
-      }else if($type=="id"){
-        $rq = $db->listes("id", $val);
-      }*/
 
       foreach ($rq as $liste) {
 
@@ -404,17 +427,9 @@ class Liste
     public static function isListExist($type,$val){
 
       $db = db::getConnexion();
-
       $nbVal = Null;
-
       $nbVal = count($db->listes($type, $val));
-      /*if($type=="url"){
-        $nbVal = count($db->listes("url", $val));
-      }else if($type=="id"){
-        $nbVal = count($db->listes("id", $val));
-      }*/
 
-      //echo $nbVal;
       $retVal = Null;
 
       if($nbVal == 1){
@@ -426,7 +441,139 @@ class Liste
       return $retVal;
     }
 
+/**
+* Vérifie la présence de tous les champs obligatoires.
+*
+*/
+public function checkMandatoryFields(){
 
+  $message = array();
+
+  if($this->listeName == "" || $this->listeName == NULL){
+    array_push($message, "Merci de préciser un nom pour cette liste");
+  }
+  if($this->adminName == "" || $this->adminName == NULL){
+    array_push($message, "Merci de préciser votre nom");
+  }
+  if($this->adminEmail == "" || $this->adminEmail == NULL){
+    array_push($message, "Merci de préciser votre email");
+  }
+
+
+  if(count($message)>0){
+      return $message;
+  }else{
+      return true;
+  }
+
+
+}
+/**
+* Vérifie la présence de tous les champs obligatoires.
+*
+*/
+public function checkMandatoryFieldsCreation(){
+
+  $message = array();
+
+  if($this->listeName == "" || $this->listeName == NULL){
+    array_push($message, "Merci de préciser un nom pour cette liste");
+  }
+  if($this->adminName == "" || $this->adminName == NULL){
+    array_push($message, "Merci de préciser votre nom");
+  }
+  if($this->adminEmail == "" || $this->adminEmail == NULL){
+    array_push($message, "Merci de préciser votre email");
+  }
+
+
+  if(count($message)>0){
+      return $message;
+  }else{
+      return false;
+  }
+
+
+}
+
+
+
+/**
+* Vérifie la présence de tous les champs obligatoires.
+*
+*/
+public function checkMandatoryFieldsUpdate(){
+
+  $message = array();
+
+  if($this->listeName == "" || $this->listeName == NULL){
+    array_push($message, "Merci de préciser un nom pour cette liste");
+  }
+  if($this->adminName == "" || $this->adminName == NULL){
+    array_push($message, "Merci de préciser votre nom");
+  }
+
+
+
+  if(count($message)>0){
+      return $message;
+  }else{
+      return false;
+  }
+
+
+}
+
+/**
+* Créer l'objet liste en recevant la ligne de la requete.
+*
+*
+*/
+public function setListe($liste){
+  //$objliste = new Liste();
+
+  $this->setListeName($liste['label']);
+  $this->setAdminName($liste['nom_admin']);
+  $this->setAdminEmail($liste['mail_admin']);
+  $this->setEndDate($liste['date_echeance']);
+  $this->setCreationDate($liste['date_creation']);
+  $this->setPublic($liste['public']);
+  $this->setDescription($liste['commentaires']);
+  $this->setIdListe($liste['id']);
+  $this->setUrl($liste['url']);
+  $this->setAdminUrl($liste['admin_url']);
+
+  //return $objliste;
+}
+
+
+
+/**
+* Mise à jour massive pour 1 champ
+*
+*/
+public static function updateMultipleListes($field, $old, $new){
+
+  $db = db::getConnexion();
+  $listes = $db->listes('id')->where($field.' = ? ', $old);
+  $nblistesToUpdate = count($listes);
+
+  $nblistesUpdated = 0;
+  foreach ($listes as $value) {
+    $liste = $db->listes[$value];
+    $liste[$field]=$new;
+    $exec =$liste->update();
+
+    $nblistesUpdated ++;
+
+  }
+  if($nblistesUpdated == $nblistesToUpdate){
+    return true;
+  }else{
+    return false;
+  }
+
+}
 
 
 
