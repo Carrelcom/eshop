@@ -19,10 +19,10 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Base de données :  `bddeshop`
+-- Base de données :  `bddeshop2`
 --
-CREATE DATABASE IF NOT EXISTS `bddeshop` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `bddeshop`;
+CREATE DATABASE IF NOT EXISTS `bddeshop2` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `bddeshop2`;
 
 -- --------------------------------------------------------
 

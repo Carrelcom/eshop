@@ -60,7 +60,7 @@ public static function GetListes($arr)
 }
 
 // Récupère toutes les catégories
-public static function getCategorie(){
+public static function getCategories(){
   return Category::getCategories();
 }
 

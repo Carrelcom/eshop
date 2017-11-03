@@ -83,7 +83,8 @@
         $arrLang["en"] = $category['label_en'];
         $obj->setLabel($arrLang);
 
-        array_push($returnArr,$obj);
+        $returnArr[$category['id']] = $obj;
+        //array_push($returnArr,$obj);
 
       }
       return $returnArr;

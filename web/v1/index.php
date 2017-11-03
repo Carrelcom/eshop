@@ -26,6 +26,14 @@ if(isset($_SESSION['mail'])){
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
         <!-- CSS Files -->
+        <!-- Bootstrap files -->
+
+        <link href="bootstrap-4.0.0-beta.2/dist/css/bootstrap.min.css" rel="stylesheet" media="screen">
+        <link href="bootstrap-4.0.0-beta.2/dist/css/bootstrap-reboot.min.css" rel="stylesheet" media="screen">
+        <link href="bootstrap-4.0.0-beta.2/dist/css/bootstrap-grid.min.css" rel="stylesheet" media="screen">
+
+
+        <!-- END Bootstrap files -->
         <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
         <link href="css/font-awesome.min.css" rel="stylesheet">
         <link href="fonts/icon-7-stroke/css/pe-icon-7-stroke.css" rel="stylesheet">
@@ -58,7 +66,7 @@ if(isset($_SESSION['mail'])){
 
             <div class="overlay">
                 <div class="container" id="bandeauHautHome">
-                    <div class="row">
+                    <div class="row"> <!-- ROW 1-->
                         <div class="col-md-9 col-sm-12 col-xs-12">
 
                             <!-- /.logo -->
@@ -106,8 +114,38 @@ if(isset($_SESSION['mail'])){
                             </div>
 
                         </div>
-                    </div>
+                    </div> <!-- FIN ROW 1-->
+                    <div class="row"><!-- ROW 2-->
+                        <div class="col-md-12 col-sm-12 col-xs-12" id="bandeauHautHome2">
+                          <!-- /.feature 1 -->
+                          <div class="col-sm-12 col-md-4 feat-list">
+                              <i class="pe-7s-note2 pe-5x pe-va wow fadeInUp"></i>
+                              <div class="inner">
+                                  <h4>Créer ta liste</h4>
+                                  <p class="hidden-sm hidden-xs">3 clics - 0 inscription - 0 engagement
+                                  </p>
+                              </div>
+                          </div>
 
+                          <!-- /.feature 2 -->
+                          <div class="col-sm-12 col-md-4 feat-list">
+                              <i class="pe-7s-users pe-5x pe-va wow fadeInUp" data-wow-delay="0.2s"></i>
+                              <div class="inner">
+                                  <h4>Partage là</h4>
+                                  <p class="hidden-sm hidden-xs">Tes proches t'aident à la compléter</p>
+                              </div>
+                          </div>
+
+                          <!-- /.feature 3 -->
+                          <div class="col-sm-12 col-md-4 feat-list">
+                              <i class="pe-7s-cart pe-5x pe-va wow fadeInUp" data-wow-delay="0.4s"></i>
+                              <div class="inner">
+                                  <h4>Fais tes courses</h4>
+                                  <p class="hidden-sm hidden-xs">Utilise ta liste pour faire tes courses</p>
+                              </div>
+                          </div>
+                        </div>
+                    </div><!-- FIN ROW 2-->
                 </div>
             </div>
         </div>
@@ -340,15 +378,21 @@ if(isset($_SESSION['mail'])){
             </div>
         </footer>
 
+
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+        <script>window.jQuery || document.write('<script src="bootstrap-4.0.0-beta.2/assets/js/vendor/jquery.min.js"><\/script>')</script>
+
         <!-- /.javascript files -->
-        <script src="js/jquery.js"></script>
-        <script src="js/bootstrap.min.js"></script>
+
+        <script src="bootstrap-4.0.0-beta.2/assets/js/vendor/popper.min.js"></script>
+        <script src="bootstrap-4.0.0-beta.2/dist/js/bootstrap.min.js"></script>
+
         <script src="js/custom.js"></script>
         <script src="js/jquery.sticky.js"></script>
         <script src="js/wow.min.js"></script>
         <script src="js/owl.carousel.min.js"></script>
         <script>
-                                    new WOW().init();
+            new WOW().init();
         </script>
     </body>
 </html>

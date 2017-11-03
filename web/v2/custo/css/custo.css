@@ -1,0 +1,55 @@
+
+/**
+Couleurs :
+#F7A600 : ORANGE
+#9caaa6 : GRIS VERT background
+#00777D : VERT
+
+*/
+
+
+#main-slider{
+  height: 100%;
+  background:#9caaa6;
+}
+
+
+.opaqued {
+    padding:0;
+    background: #0caaa5;
+    height:70px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+
+    /*text-shadow: rgba(0, 0, 0, 0.4) 0 1px 1px;*/
+}
+.navbar-inverse {
+    background: #9caaa6;
+    border-bottom: 1px solid #cbd6e2;
+    border: none;
+    height: 70px;
+  }
+
+.navbar-inverse .navbar-nav > li > a {
+    letter-spacing: 1px;
+    font-size: 12px;
+    padding: 15px 15px 10px;
+    color: #fff;
+
+}
+
+#bandeauHome{
+  padding: 8em 0 0 0;
+}
+
+#single-page-slider {
+    min-height: 150px !important;
+    background: #F7A600;
+}
+
+.btn-outlined{
+  text-transform: none !important;
+}

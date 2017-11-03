@@ -70,3 +70,10 @@ padding:2em 1em 4em 1em;
 .pe-7s-up-arrow:hover .pe-va:hover{
 color:#F7A600;
 }
+
+#bandeauHautHome2{
+  width:100%;
+  color:red;
+  background:#ffffff;
+  margin:6em 0;
+}

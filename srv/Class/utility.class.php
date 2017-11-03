@@ -24,12 +24,15 @@ class Utility
 
   /**
   * Gère les redirections
-  *
+  * Nom de la page à inclure + tableau Key => Value avec les parametres en Get
+  * Si ("index", NULL) ==> Renvoi vers la HOme page
   */
   public static function redirect($page, $param){
-
-    $url = "location:page.php?page=".$page;
-
+    if($page == "index"){
+      $url = "location:index.php";
+    }else{
+      $url = "location:page.php?page=".$page;
+    }
     if($param <> NULL){
       if(is_array($param)){
         foreach ($param as $key => $value) {

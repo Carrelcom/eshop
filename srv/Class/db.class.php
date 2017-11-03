@@ -21,7 +21,7 @@ class db{
 
     self::init();
 
-    $DB = "bddeshop";
+    $DB = "bddeshop2";
     $HOST = "localhost";
     $USER = "root";
     $MDP = "";

@@ -7,6 +7,13 @@
 class Ihm
 {
 
+
+public static function cleanString($in) {
+  	$search = array ('@[éèêëÊË]@i','@[àâäÂÄ]@i','@[îïÎÏ]@i','@[ûùüÛÜ]@i','@[ôöÔÖ]@i','@[ç]@i','@[ ]@i','@[^a-zA-Z0-9_]@');
+  	$replace = array ('e','a','i','u','o','c','_','');
+  	return preg_replace($search, $replace, $in);
+  }
+
 /**
 * Converti une date dans un nouveau format.
 *
@@ -32,7 +39,6 @@ public static function dateConvert($date, $to){
 }
 
 }
-
 
 
 

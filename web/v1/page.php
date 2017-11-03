@@ -6,22 +6,26 @@ $connected = false;
 $mail = "";
 $labelList = "";
 $disabled = "";
+$run = false;
 if(isset($_SESSION['mail'])){
   $connected = true;
   $mail = $_SESSION['mail'];
   $disabled = "readonly='readonly'";
 }
-$page = NULL;
+
 if(isset($_GET['page']) && $_GET['page']<>"" && $_GET['page']<>Null){
-  if(file_exists($filename)){
-    $page = $_GET['page'];
+  $page = $_GET['page'];
+  if(file_exists("html/".$page.".php")){
+    $page = 'html/'.$page.'.php';
+    $run = true;
+  }else{
+    Utility::redirect('error',array('code'=>'404'));
   }
-
-
- include('html/'.$page.'.php');
 }else{
-  echo "erreur 404, pas de page défini";
+    Utility::redirect('error',array('code'=>'404'));
 }
+
+
 
 
 ?>
@@ -111,12 +115,8 @@ if(isset($_GET['page']) && $_GET['page']<>"" && $_GET['page']<>Null){
                     <!-- /.apple devices image -->
                     <div class="col-md-10 col-md-offset-1">
         <?php
-          if(isset($_GET['page']) && $_GET['page']<>"" && $_GET['page']<>Null){
-            $page = $_GET['page'];
-
-           include('html/'.$page.'.php');
-          }else{
-            echo "erreur 404, pas de page défini";
+          if($run){
+            include($page);
           }
 
         ?>
